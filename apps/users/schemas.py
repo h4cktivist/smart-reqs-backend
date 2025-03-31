@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from bson import ObjectId
+from pydantic import BaseModel, Field
 
 
 class Token(BaseModel):
@@ -11,6 +12,10 @@ class TokenData(BaseModel):
 
 
 class UserResponse(BaseModel):
+    id: str = Field(
+        alias="_id",
+        default_factory=lambda: str(ObjectId()),
+    )
     username: str
     email: str
     is_expert: bool
