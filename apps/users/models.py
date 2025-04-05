@@ -1,7 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 from bson import ObjectId
-
-from core.database import PyObjectId
 
 
 class UserBase(BaseModel):
