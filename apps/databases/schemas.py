@@ -1,14 +1,11 @@
 from pydantic import Field
 from bson import ObjectId
 
+from core.database import PyObjectId
 from .models import DatabaseBase
 
 
 class DatabaseResponse(DatabaseBase):
-    id: str = Field(
-        alias="_id",
-        default_factory=lambda: str(ObjectId()),
-    )
-
+    id: PyObjectId
     class Config:
         from_attributes = True

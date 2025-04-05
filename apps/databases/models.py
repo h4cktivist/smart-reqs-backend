@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from bson import ObjectId
 
+from core.database import PyObjectId
+
 
 class DatabaseBase(BaseModel):
     name: str
@@ -10,6 +12,11 @@ class DatabaseBase(BaseModel):
     big_data_poss: bool
     acid_support: bool
     licence_type: str
+
+    class Config:
+        json_encoders = {
+            ObjectId: str
+        }
 
 
 class DatabaseCreate(DatabaseBase):
@@ -26,6 +33,6 @@ class DatabaseUpdate(BaseModel):
 
 
 class DatabaseInDB(DatabaseBase):
-    class Config:
-        json_encoders = {ObjectId: str}
-        arbitrary_types_allowed = True
+    id: PyObjectId = Field(
+        alias="_id",
+    )

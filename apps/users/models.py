@@ -1,11 +1,18 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from bson import ObjectId
+
+from core.database import PyObjectId
 
 
 class UserBase(BaseModel):
     username: str
     email: EmailStr
     is_expert: bool = False
+
+    class Config:
+        json_encoders = {
+            ObjectId: str
+        }
 
 
 class UserCreate(UserBase):
@@ -14,7 +21,3 @@ class UserCreate(UserBase):
 
 class UserInDB(UserBase):
     hashed_password: str
-
-    class Config:
-        json_encoders = {ObjectId: str}
-        arbitrary_types_allowed = True

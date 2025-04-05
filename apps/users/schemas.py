@@ -1,5 +1,7 @@
-from bson import ObjectId
 from pydantic import BaseModel, Field
+
+from apps.users.models import UserBase
+from core.database import PyObjectId
 
 
 class Token(BaseModel):
@@ -11,14 +13,13 @@ class TokenData(BaseModel):
     username: str
 
 
-class UserResponse(BaseModel):
-    id: str = Field(
+class UserResponse(UserBase):
+    id: PyObjectId = Field(
         alias="_id",
-        default_factory=lambda: str(ObjectId()),
     )
-    username: str
-    email: str
-    is_expert: bool
+
+    class Config:
+        from_attributes = True
 
 
 class UserLoginRequest(BaseModel):

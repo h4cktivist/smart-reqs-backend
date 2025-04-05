@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from core.database import get_user_collection
 from core.security import get_password_hash, verify_password
 from .models import UserCreate, UserInDB
+from .schemas import UserResponse
 
 
 async def create_user(user: UserCreate) -> UserInDB:
@@ -22,19 +23,21 @@ async def create_user(user: UserCreate) -> UserInDB:
     )
 
     result = await user_collection.insert_one(user_db.dict(by_alias=True))
-    return user_db
+    new_user = await user_collection.find_one({"_id": result.inserted_id})
+    return new_user
 
 
-async def get_user(email: str) -> Optional[UserInDB]:
+async def get_user(email: str) -> Optional[UserResponse]:
     user_collection = get_user_collection()
     user = await user_collection.find_one({"email": email})
-    return UserInDB(**user) if user else None
+    return UserResponse(**user) if user else None
 
 
 async def authenticate_user(email: str, password: str) -> Optional[UserInDB]:
-    user = await get_user(email)
+    user_collection = get_user_collection()
+    user = await user_collection.find_one({"email": email})
     if not user:
         return None
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user['hashed_password']):
         return None
     return user

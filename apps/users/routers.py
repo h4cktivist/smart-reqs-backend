@@ -25,7 +25,7 @@ async def login(credentials: schemas.UserLoginRequest):
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(
-        data={"sub": user.email},
+        data={"sub": user['email']},
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     return {"access_token": access_token, "token_type": "bearer"}

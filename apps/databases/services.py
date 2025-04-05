@@ -9,7 +9,8 @@ async def create_database(database: DatabaseCreate) -> DatabaseInDB:
     collection = get_database_collection()
     db_dict = database.dict()
     result = await collection.insert_one(db_dict)
-    return DatabaseInDB(**db_dict, id=result.inserted_id)
+    new_db = await collection.find_one({"_id": result.inserted_id})
+    return DatabaseInDB(**new_db)
 
 
 async def get_database(database_id: str) -> Optional[DatabaseInDB]:
