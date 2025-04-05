@@ -42,3 +42,7 @@ def get_user_collection():
 
 def get_database_collection():
     return get_database()["databases"]
+
+
+def get_framework_collection():
+    return get_database()["frameworks"]
