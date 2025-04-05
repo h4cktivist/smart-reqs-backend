@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from core.database import connect_to_mongo, close_mongo_connection
+
 from apps.users.routers import router as auth_router
+from apps.databases.routers import router as db_router
 
 
 @asynccontextmanager
@@ -18,8 +20,9 @@ app = FastAPI(
 )
 
 app.include_router(auth_router)
+app.include_router(db_router)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Auth Service is running"}
+    return {"message": "Service is running"}

@@ -23,3 +23,7 @@ def get_database():
 
 def get_user_collection():
     return get_database()["users"]
+
+
+def get_database_collection():
+    return get_database()["databases"]
