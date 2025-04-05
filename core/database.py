@@ -1,6 +1,8 @@
 from typing import Any
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import GetJsonSchemaHandler
+from pydantic.json_schema import JsonSchemaValue
 
 from .config import settings
 
@@ -9,16 +11,22 @@ class Database:
     client: AsyncIOMotorClient = None
 
 
-class PyObjectId(ObjectId):
+class PyObjectId(str):
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_json_schema__(cls, core_schema, handler: GetJsonSchemaHandler) -> JsonSchemaValue:
+        return {"type": "string", "format": "objectid"}
 
     @classmethod
-    def validate(cls, value: Any, field: str = None) -> ObjectId:
-        if not ObjectId.is_valid(value):
-            raise ValueError(f"Invalid ObjectId: {value}")
-        return ObjectId(value)
+    def __get_pydantic_core_schema__(cls, source_type, handler):
+        import pydantic_core.core_schema as core_schema
+
+        return core_schema.no_info_plain_validator_function(cls.validate)
+
+    @classmethod
+    def validate(cls, v: Any) -> str:
+        if not ObjectId.is_valid(v):
+            raise ValueError(f"Invalid ObjectId: {v}")
+        return str(v)
 
 
 db = Database()
