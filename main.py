@@ -6,6 +6,7 @@ from core.database import connect_to_mongo, close_mongo_connection
 from apps.users.routers import router as auth_router
 from apps.databases.routers import router as db_router
 from apps.frameworks.routers import router as fr_router
+from apps.libraries.routers import router as lib_router
 
 
 @asynccontextmanager
@@ -23,6 +24,7 @@ app = FastAPI(
 app.include_router(auth_router)
 app.include_router(db_router)
 app.include_router(fr_router)
+app.include_router(lib_router)
 
 
 @app.get("/")
