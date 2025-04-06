@@ -5,7 +5,8 @@ from core.security import create_access_token
 from core.config import settings
 from . import schemas, services, models
 from .dependencies import get_current_user
-
+from .models import UserInDB, UserUpdate
+from .services import update_user
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -34,3 +35,15 @@ async def login(credentials: schemas.UserLoginRequest):
 @router.get("/me", response_model=schemas.UserResponse)
 async def read_user_me(current_user: schemas.UserResponse = Depends(get_current_user)):
     return current_user
+
+
+@router.patch("/me", response_model=schemas.UserResponse)
+async def update_current_user(
+        user_update: UserUpdate,
+        current_user: schemas.UserResponse = Depends(get_current_user)
+):
+    return await update_user(
+        user_id=str(current_user.id),
+        update_data=user_update,
+        current_user=current_user
+    )

@@ -17,6 +17,7 @@ class UserResponse(UserBase):
     id: PyObjectId = Field(
         alias="_id",
     )
+    hashed_password: str
 
     class Config:
         from_attributes = True
