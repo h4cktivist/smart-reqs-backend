@@ -58,3 +58,7 @@ def get_framework_collection():
 
 def get_library_collection():
     return get_database()["libraries"]
+
+
+def get_requests_collection():
+    return get_database()["requests"]

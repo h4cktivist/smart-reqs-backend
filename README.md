@@ -19,9 +19,14 @@ pip install - r requirements.txt
 ```txt
 MONGO_URI=[URI базы данных MongoDB]
 MONGO_DB=[Название базы данных]
+
 SECRET_KEY=[Секретный ключ]
 ALGORITHM=[Алгоритм хеширования паролей]
 ACCESS_TOKEN_EXPIRE_MINUTES=[Время жизни токена авторизации (мин.)]
+
+LLM_PROVIDER_URL=[URL провайдера LLM через библиотеку OpenAI]
+LLM_API_KEY=[API ключ для доступа к LLM]
+LLM_NAME=[Название LLM]
 ```
 
 Запустить:
