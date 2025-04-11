@@ -29,7 +29,7 @@ async def login(credentials: schemas.UserLoginRequest):
         data={"sub": user['email']},
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "expires_in": settings.ACCESS_TOKEN_EXPIRE_MINUTES}
 
 
 @router.get("/me", response_model=schemas.UserResponse)
