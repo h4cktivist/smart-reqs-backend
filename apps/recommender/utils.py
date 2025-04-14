@@ -28,12 +28,8 @@ async def get_project_info_from_llm(idea_description: str, functional_reqs: str)
     completion = client.chat.completions.create(
         model=settings.LLM_NAME,
         messages=[{"role": "user", "content": project_info + prompt}],
-        stream=True
     )
-    result = ""
-    for chunk in completion:
-        if chunk.choices[0].delta.content is not None:
-            result += chunk.choices[0].delta.content
+    result = completion.choices[0].message.content
 
     if result == 'False':
         result_json = {"status": False}
