@@ -62,3 +62,7 @@ def get_library_collection():
 
 def get_requests_collection():
     return get_database()["requests"]
+
+
+def get_results_collection():
+    return get_database()["results"]

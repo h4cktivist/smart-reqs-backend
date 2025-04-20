@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
 from core.database import PyObjectId
@@ -8,9 +9,9 @@ class ResultResponse(BaseModel):
         alias="_id",
     )
     request_id: PyObjectId
-    framework_ids: list[PyObjectId]
-    library_ids: list[PyObjectId]
-    db_ids: list[PyObjectId]
+    frameworks: list[str]
+    libraries: list[str]
+    databases: list[str]
 
     class Config:
         from_attributes = True

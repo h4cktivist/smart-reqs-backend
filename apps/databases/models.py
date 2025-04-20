@@ -7,7 +7,7 @@ from core.database import PyObjectId
 
 class DatabaseBase(BaseModel):
     name: str
-    db_type: str
+    type: str
     scaling_poss: bool
     big_data_poss: bool
     acid_support: bool
