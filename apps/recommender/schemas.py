@@ -2,6 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from core.database import PyObjectId
+from .models import RequestInDB
 
 
 class ResultResponse(BaseModel):
@@ -15,3 +16,9 @@ class ResultResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class HistoryResponse(BaseModel):
+    user_id: PyObjectId
+    request: RequestInDB
+    result: Optional[ResultResponse]
