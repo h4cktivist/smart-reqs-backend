@@ -6,7 +6,7 @@ from apps.users.models import UserInDB
 from core.database import get_requests_collection, get_results_collection
 from .models import RequestInDB, RequestCreate
 from .schemas import ResultResponse
-from .utils import get_project_info_from_llm, get_recommended_techs
+from .utils import get_project_info_from_llm, get_recommended_techs, filter_recommended_techs_with_llm
 
 
 async def get_request(request: RequestCreate, current_user: UserInDB) -> RequestInDB:
@@ -33,8 +33,9 @@ async def get_request(request: RequestCreate, current_user: UserInDB) -> Request
 async def get_recomendations(request: RequestInDB) -> ResultResponse:
     collection = get_results_collection()
     recomendation_result = await get_recommended_techs(request.dict())
-    recomendation_result['request_id'] = request.id
+    filtered_recomendation_result = await filter_recommended_techs_with_llm(recomendation_result)
+    filtered_recomendation_result['request_id'] = request.id
 
-    result = await collection.insert_one(recomendation_result)
+    result = await collection.insert_one(filtered_recomendation_result)
     inserted_result = await collection.find_one({"_id": result.inserted_id})
     return ResultResponse(**inserted_result)

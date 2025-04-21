@@ -107,3 +107,32 @@ async def get_recommended_techs(project_data: dict) -> dict:
         'libraries': recommended_libraries,
         'databases': recommended_dbs
     }
+
+
+async def filter_recommended_techs_with_llm(recommended_techs: dict) -> dict:
+    intro_prompt = f'''
+    Есть стек, содержащий следующие технологии, разделенные по категориям:
+    Фреймворки: {recommended_techs['frameworks']}
+    Библиотеки: {recommended_techs['libraries']}
+    СУБД: {recommended_techs['databases']}
+    Для каждой категории выбери наиболее подходящие и совместимые друг с другом технологии, по 2-3 наименования в каждой категории
+    '''
+    result_format_prompt = '''
+    Результат представь в формате JSON, следующего вида:
+    {
+      "frameworks": String[],
+      "libraries": String[],
+      "databases": String[]
+    }
+    В своем ответе дай только JSON, без указания формата ```json и любых дополнительных символов
+    '''
+
+    completion = client.chat.completions.create(
+        model=settings.LLM_NAME,
+        messages=[{"role": "user", "content": intro_prompt + result_format_prompt}],
+    )
+    result = completion.choices[0].message.content
+    try:
+        return json.loads(result)
+    except ValueError:
+        return recommended_techs
