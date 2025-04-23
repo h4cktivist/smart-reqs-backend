@@ -57,8 +57,9 @@ async def update_user(user_id: str, update_data: UserUpdate, current_user: UserR
 
     sensitive_fields = ['email', 'username', 'new_password']
     if any(getattr(update_data, field) is not None for field in sensitive_fields):
-        if not update_data.current_password or not verify_password(update_data.current_password,
-                                                                   current_user.hashed_password):
+        if update_data.new_password and (not update_data.current_password
+                                         or not verify_password(update_data.current_password,
+                                                                current_user.hashed_password)):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Current password is incorrect"
