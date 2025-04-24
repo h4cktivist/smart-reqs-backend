@@ -47,7 +47,7 @@ async def get_requests_history(current_user: UserInDB) -> List[HistoryResponse]:
     requests_collection = get_requests_collection()
     results_collection = get_results_collection()
 
-    current_user_requests = await requests_collection.find({'user_id': current_user.id}).to_list()
+    current_user_requests = await requests_collection.find({'user_id': current_user.id}).sort('datetime', -1).to_list()
     history_list = []
     for req in current_user_requests:
         result_for_req = await results_collection.find_one({'request_id': str(req['_id'])})
