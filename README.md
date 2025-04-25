@@ -35,3 +35,5 @@ uvicorn main:app
 ```
 
 **Документация**: `/docs`
+
+**Фронтенд**: *https://github.com/h4cktivist/smart-reqs-frontend*
