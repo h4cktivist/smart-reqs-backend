@@ -61,6 +61,9 @@ async def get_requests_history(current_user: UserInDB) -> List[HistoryResponse]:
 
 
 async def delete_request(current_user: UserInDB, request_id: str) -> bool:
-    collection = get_requests_collection()
-    result = await collection.delete_one({'_id': ObjectId(request_id), 'user_id': current_user.id})
-    return result.deleted_count == 1
+    req_collection = get_requests_collection()
+    res_collection = get_results_collection()
+    result_req = await req_collection.delete_one({'_id': ObjectId(request_id), 'user_id': current_user.id})
+    if result_req.deleted_count == 1:
+        result_res = await res_collection.delete_one({'request_id': request_id})
+    return result_req.deleted_count == 1 and result_res.deleted_count == 1
