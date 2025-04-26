@@ -35,7 +35,7 @@ async def get_request(request: RequestCreate, current_user: UserInDB) -> Request
 async def get_recomendations(request: RequestInDB) -> ResultResponse:
     collection = get_results_collection()
     recomendation_result = await get_recommended_techs(request.dict())
-    filtered_recomendation_result = await filter_recommended_techs_with_llm(recomendation_result)
+    filtered_recomendation_result = await filter_recommended_techs_with_llm(request.dict(), recomendation_result)
     filtered_recomendation_result['request_id'] = request.id
 
     result = await collection.insert_one(filtered_recomendation_result)

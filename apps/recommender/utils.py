@@ -109,20 +109,25 @@ async def get_recommended_techs(project_data: dict) -> dict:
     }
 
 
-async def filter_recommended_techs_with_llm(recommended_techs: dict) -> dict:
+async def filter_recommended_techs_with_llm(request: dict, recommended_techs: dict) -> dict:
     intro_prompt = f'''
-    Есть стек, содержащий следующие технологии, разделенные по категориям:
+    Есть описание проекта: {request['idea_description']}
+    И его функциональные требования: {request['functional_reqs']}
+    Также есть стек, содержащий следующие технологии для реализации этого проекта, разделенные по категориям:
     Фреймворки: {recommended_techs['frameworks']}
     Библиотеки: {recommended_techs['libraries']}
     СУБД: {recommended_techs['databases']}
     Для каждой категории выбери наиболее подходящие и совместимые друг с другом технологии, по 2-3 наименования в каждой категории
+    Также, исходя из описания проекта, определи минмальное и максимальное количество исполнителей проекта
     '''
     result_format_prompt = '''
     Результат представь в формате JSON, следующего вида:
     {
       "frameworks": String[],
       "libraries": String[],
-      "databases": String[]
+      "databases": String[],
+      "min_devs": int,
+      "max_devs": int
     }
     В своем ответе дай только JSON, без указания формата ```json и любых дополнительных символов
     '''

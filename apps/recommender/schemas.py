@@ -13,6 +13,8 @@ class ResultResponse(BaseModel):
     frameworks: list[str]
     libraries: list[str]
     databases: list[str]
+    min_devs: int
+    max_devs: int
 
     class Config:
         from_attributes = True
