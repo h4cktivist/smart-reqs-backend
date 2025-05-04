@@ -35,7 +35,7 @@ TEST_VALID_POJECT_LONG = {
     "product_type": "веб-приложение",
     "db_needed": True,
     "big_data_needed": False,
-    "data_structure": "string",
+    "data_structure": "SQL",
     "data_analysis_needed": False,
     "ml_needed": False,
     "languages_preferences": ["Python"],
@@ -130,6 +130,6 @@ async def test_history_delete():
             token = auth_res.json()['access_token']
 
             res = await ac.get(PREFIX + '/history', headers={'Authorization': f'Bearer {token}'})
-            req_id = res.json()[0]['request_id']
+            req_id = res.json()[0]
             del_res = await ac.delete(PREFIX + f'/history/{req_id}', headers={'Authorization': f'Bearer {token}'})
             assert del_res.status_code == 200
