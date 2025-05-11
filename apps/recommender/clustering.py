@@ -56,7 +56,7 @@ async def cluster_data(df_encoded, n_clusters, init='Cao', n_init=5, verbose=0):
 
 
 async def get_clustering_results():
-    n_clusters_frameworks, n_clusters_libraries, n_clusters_databases = 4, 3, 3
+    n_clusters_frameworks, n_clusters_libraries, n_clusters_databases = 4, 4, 4
     frameworks_df, libraries_df, databases_df = await create_dataframes_from_mongo()
     frameworks_df_encoded, frameworks_encoders, libraries_df_encoded, \
         libraries_encoders, databases_df_encoded, databases_encoders = await create_encoded_dataframes(frameworks_df,
