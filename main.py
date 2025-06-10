@@ -9,6 +9,7 @@ from apps.databases.routers import router as db_router
 from apps.frameworks.routers import router as fr_router
 from apps.libraries.routers import router as lib_router
 from apps.recommender.routers import router as rec_router
+from apps.expert.routers import router as exp_router
 
 
 @asynccontextmanager
@@ -36,6 +37,7 @@ app.include_router(db_router)
 app.include_router(fr_router)
 app.include_router(lib_router)
 app.include_router(rec_router)
+app.include_router(exp_router)
 
 
 @app.get("/")
